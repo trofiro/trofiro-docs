@@ -1,0 +1,77 @@
+---
+title: "Trofiro Data Model and Object Types"
+sidebarTitle: "Data Model"
+description: "Learn about Trofiro's object hierarchy: workspaces contain resources, which have standard fields, custom fields, tags, and relationships."
+---
+
+Trofiro organizes all of your data into a clear, predictable hierarchy. At the top sits the workspace, which acts as the container for everything your team does. Inside each workspace you create resources — the primary units of work — and each resource carries a structured set of fields that describe and distinguish it. Understanding this hierarchy makes it easier to model your data effectively, write accurate API queries, and build workflows that behave exactly as you expect.
+
+## Object Hierarchy
+
+Trofiro's data model has three levels:
+
+**Workspace → Resource → Field**
+
+- **Workspace** — The root container for your organization. All resources, workflows, integrations, members, and settings belong to a single workspace. Workspaces are fully isolated from one another; data in one workspace is never visible in another.
+- **Resource** — The fundamental object inside a workspace. A resource can represent anything meaningful to your team — a task, a project, a customer, an incident, or any other entity you want to track. Resources share a common set of standard fields and can be extended with custom fields.
+- **Field** — An individual data point on a resource. Standard fields are present on every resource and have fixed types enforced by Trofiro. Custom fields are defined by your team and attached to resources workspace-wide.
+
+## Resource Fields
+
+Every resource in Trofiro includes the following standard fields out of the box:
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | `string` | A globally unique identifier for the resource. Assigned by Trofiro at creation and never changes. |
+| `name` | `string` | A human-readable label for the resource. Required when creating or updating a resource. |
+| `description` | `string` | An optional longer-form description. Supports plain text up to 10,000 characters. |
+| `status` | `enum` | The lifecycle state of the resource. One of `active`, `archived`, or `deleted`. |
+| `tags` | `string[]` | An array of free-form string labels used for organization and filtering. |
+| `created_at` | `string` | ISO 8601 timestamp recording when the resource was first created. Set by Trofiro; read-only. |
+| `updated_at` | `string` | ISO 8601 timestamp recording the last time any field on the resource was modified. Updated automatically. |
+| `metadata` | `object` | A flat key-value map for storing arbitrary custom data that does not fit a defined custom field. Both keys and values must be strings. |
+
+<Info>
+  The `id`, `created_at`, and `updated_at` fields are managed entirely by Trofiro. You cannot set or overwrite them through the API or the UI.
+</Info>
+
+## Custom Fields
+
+In addition to the standard fields above, you can define your own fields to capture information specific to your workflow. Navigate to **Settings → Custom Fields** to create and manage them.
+
+Trofiro supports the following custom field types:
+
+- **Text** — A single-line or multi-line string value, useful for notes, URLs, or identifiers that don't map to a standard field.
+- **Number** — An integer or decimal value, useful for tracking quantities, scores, budgets, or durations.
+- **Date** — An ISO 8601 date or date-time value, useful for deadlines, scheduled events, or milestones.
+- **Select** — A single choice from a predefined list of options you configure. Use this to enforce consistency across your team — for example, a `priority` field with options `low`, `medium`, and `high`.
+
+Custom fields appear alongside standard fields in both the UI and the API. When reading a resource via the API, custom fields are returned inside the `custom_fields` object on the resource body, keyed by the field's slug.
+
+<Tip>
+  Keep your custom field slugs short and lowercase with underscores (e.g., `due_date`, `client_name`). Slugs cannot be changed after a field is created, so a consistent naming convention saves headaches later.
+</Tip>
+
+## Tags
+
+Tags are free-form string labels you attach to resources to make them easier to organize, search, and filter. Unlike custom fields, tags don't have a fixed schema — you can create any tag on the fly directly from a resource's detail view or via the API.
+
+A few practical guidelines for using tags effectively:
+
+- Use a consistent prefix convention to group related tags — for example, `team:engineering`, `team:design`, or `env:production`, `env:staging`.
+- Filter resources by one or more tags from the dashboard search bar or via the `tags` query parameter in the API.
+- Combine tags with workflow conditions to target automation at specific subsets of resources without needing separate workflows for each case.
+
+<Note>
+  Tags are case-sensitive. `Urgent` and `urgent` are treated as two distinct tags. Establish a casing convention — lowercase is recommended — before your team starts tagging resources at scale.
+</Note>
+
+## Relationships
+
+Resources can be linked to other resources within the same workspace using Trofiro's relationships API. A relationship is a directional association between a source resource and a target resource, identified by a relationship type you define (for example, `blocks`, `depends_on`, or `parent_of`).
+
+Relationships are stored independently from the resources themselves and can be queried in both directions — you can fetch everything a resource `depends_on` as well as everything that `depends_on` it. This makes it straightforward to model hierarchies, dependency graphs, and cross-resource references without duplicating data.
+
+<Warning>
+  Deleting a resource does not automatically remove its relationships. If your integration or workflow logic relies on relationship data, make sure to clean up relationships explicitly before or after deleting resources to avoid orphaned references.
+</Warning>

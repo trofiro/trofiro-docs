@@ -1,0 +1,257 @@
+---
+title: "REST API Endpoints for Resources"
+sidebarTitle: "Resources"
+description: "CRUD endpoints for Trofiro resources: list, create, retrieve, update, and delete resources via the REST API."
+---
+
+Resources are the primary data objects in Trofiro. They represent the items your team creates, tracks, and acts on inside the platform. The Resources API exposes full CRUD operations — you can list, retrieve, create, update, and delete resources programmatically, enabling deep integration with your existing tools and workflows.
+
+---
+
+## GET /resources
+
+Retrieve a paginated list of all resources in your workspace. Use the query parameters to filter and page through large result sets.
+
+### Query Parameters
+
+<ParamField query="limit" type="integer">
+  Number of resources to return per page. Defaults to `20`. Maximum value is `100`.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  Pagination cursor from a previous response's `meta.next_cursor`. Omit to start from the first page.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter by resource status. Accepted values: `active`, `archived`. Omit to return resources of both statuses.
+</ParamField>
+
+<ParamField query="tag" type="string">
+  Filter results to resources that include this tag. For example, `?tag=q1` returns all resources tagged with `q1`.
+</ParamField>
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "res_01H8X2K9M3",
+      "name": "Q1 Planning",
+      "description": "Resources for Q1 planning",
+      "status": "active",
+      "tags": ["planning", "q1"],
+      "metadata": {},
+      "created_at": "2024-01-10T08:00:00Z",
+      "updated_at": "2024-01-12T14:30:00Z"
+    }
+  ],
+  "meta": {
+    "has_more": true,
+    "next_cursor": "cur_01H8X2K9M3"
+  }
+}
+```
+
+---
+
+## POST /resources
+
+Create a new resource in your workspace. The only required field is `name`; all other fields are optional and can be added at creation time or updated later.
+
+### Body Parameters
+
+<ParamField body="name" type="string" required>
+  Display name of the resource. Must be between 1 and 255 characters.
+</ParamField>
+
+<ParamField body="description" type="string">
+  A longer description of the resource. Supports plain text up to 5,000 characters.
+</ParamField>
+
+<ParamField body="status" type="string">
+  Initial status of the resource. Accepted values: `active`, `archived`. Defaults to `active`.
+</ParamField>
+
+<ParamField body="tags" type="array">
+  An array of string tags to attach to the resource. Tags are case-insensitive and must each be 50 characters or fewer.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  A free-form JSON object for storing arbitrary key-value data alongside the resource. Values must be strings, numbers, or booleans.
+</ParamField>
+
+### Example
+
+**Request:**
+
+```bash
+curl -X POST https://api.trofiro.com/v1/resources \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Q1 Planning",
+    "description": "Resources for Q1 planning",
+    "tags": ["planning", "q1"],
+    "status": "active"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": "res_01H8X2K9M3",
+    "name": "Q1 Planning",
+    "description": "Resources for Q1 planning",
+    "status": "active",
+    "tags": ["planning", "q1"],
+    "metadata": {},
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-15T10:30:00Z"
+  },
+  "meta": {
+    "request_id": "req_abc123",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+---
+
+## GET /resources/:id
+
+Retrieve a single resource by its ID.
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the resource to retrieve. Resource IDs are prefixed with `res_`.
+</ParamField>
+
+### Response
+
+Returns the full resource object inside `data`.
+
+**Example request:**
+
+```bash
+curl https://api.trofiro.com/v1/resources/res_01H8X2K9M3 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+**Example response:**
+
+```json
+{
+  "data": {
+    "id": "res_01H8X2K9M3",
+    "name": "Q1 Planning",
+    "description": "Resources for Q1 planning",
+    "status": "active",
+    "tags": ["planning", "q1"],
+    "metadata": {},
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-15T10:30:00Z"
+  },
+  "meta": {
+    "request_id": "req_bcd234",
+    "timestamp": "2024-01-15T11:00:00Z"
+  }
+}
+```
+
+---
+
+## PUT /resources/:id
+
+Replace the fields of an existing resource. All body parameters are optional — include only the fields you want to change. Fields you omit retain their current values.
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the resource to update.
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="name" type="string">
+  Updated display name. Must be between 1 and 255 characters.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Updated description. Supports plain text up to 5,000 characters.
+</ParamField>
+
+<ParamField body="status" type="string">
+  Updated status. Accepted values: `active`, `archived`.
+</ParamField>
+
+<ParamField body="tags" type="array">
+  Replacement tag list. This **replaces** the existing tags array rather than appending to it.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Replacement metadata object. This **replaces** the existing metadata rather than merging.
+</ParamField>
+
+### Example
+
+**Request:**
+
+```bash
+curl -X PUT https://api.trofiro.com/v1/resources/res_01H8X2K9M3 \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Q1 Planning (Final)",
+    "status": "archived"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": "res_01H8X2K9M3",
+    "name": "Q1 Planning (Final)",
+    "description": "Resources for Q1 planning",
+    "status": "archived",
+    "tags": ["planning", "q1"],
+    "metadata": {},
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-15T12:00:00Z"
+  },
+  "meta": {
+    "request_id": "req_cde345",
+    "timestamp": "2024-01-15T12:00:00Z"
+  }
+}
+```
+
+---
+
+## DELETE /resources/:id
+
+Permanently delete a resource from your workspace. This action cannot be undone.
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the resource to delete.
+</ParamField>
+
+### Response
+
+Returns `204 No Content` on success with an empty response body.
+
+```bash
+curl -X DELETE https://api.trofiro.com/v1/resources/res_01H8X2K9M3 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+<Warning>
+  Deletion is **permanent**. Once a resource is deleted, it cannot be recovered. If you want to hide a resource without losing it, update its `status` to `archived` using `PUT /resources/:id` instead.
+</Warning>

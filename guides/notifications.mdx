@@ -1,0 +1,67 @@
+---
+title: "Managing Notifications and Alert Preferences"
+sidebarTitle: "Notifications"
+description: "Configure Trofiro notification channels, alert rules, and digest settings to stay informed without inbox overload."
+---
+
+Trofiro's notification system keeps you and your team up to date on the activity that matters most, whether that's a new resource created by a colleague, a workflow completing in the background, or a system alert about your account quota. Every notification can be routed to one or more channels and tuned to the frequency that suits the way you work.
+
+## Notification Channels
+
+Trofiro delivers notifications through three channels. You can enable any combination of channels for each event type.
+
+- **In-app notifications** — appear in the notification panel accessed by clicking the **bell icon** in the top navigation bar. A badge on the icon shows your unread count. In-app notifications are always available regardless of other channel settings.
+- **Email notifications** — sent to the email address associated with your Trofiro account. You can choose between real-time delivery (one email per event) or a daily digest that groups all activity into a single summary message.
+- **Slack notifications** — sent to a Slack channel of your choice. This channel requires the Slack integration to be connected first. See [Connect Trofiro with Your Favorite Tools](/guides/integrations) to set up Slack.
+
+## Configuring Notification Preferences
+
+<Steps>
+  <Step title="Open notification settings">
+    Go to **Settings > Notifications**.
+  </Step>
+  <Step title="Select which events trigger notifications">
+    Review the event list and toggle on the events you want to be notified about:
+
+    - **Resource Created** — someone adds a new resource to your workspace.
+    - **Resource Updated** — a field on a resource you follow is changed.
+    - **Resource Deleted** — a resource is permanently removed.
+    - **Workflow Run** — an automated workflow completes or fails.
+    - **Mention** — someone @mentions you in a comment or description.
+  </Step>
+  <Step title="Choose channels per event type">
+    For each enabled event, select one or more delivery channels: **In-app**, **Email**, or **Slack**. Each event can have a different channel configuration — for example, you might want mentions delivered to all three channels while resource updates go to in-app only.
+  </Step>
+  <Step title="Set email delivery frequency">
+    For any event routed to Email, choose between **Real-time** (an email is sent immediately when the event occurs) and **Daily Digest** (all email notifications are batched into a single summary delivered once per day at a time you specify).
+  </Step>
+  <Step title="Save your preferences">
+    Click **Save Preferences**. Your settings take effect immediately for all future events.
+  </Step>
+</Steps>
+
+## Notification Types
+
+The table below summarizes every notification type in Trofiro, what triggers it, and its default delivery channel.
+
+| Notification Type | Trigger | Default Channel |
+|---|---|---|
+| Resource Created | New resource added to the workspace | In-app |
+| Resource Updated | A field on the resource changes | In-app |
+| Workflow Triggered | A workflow runs (successfully or with errors) | In-app + Email |
+| Mention | Someone @mentioned you in a comment or field | In-app + Email |
+| System Alert | Quota limits reached or account-level errors | Email |
+
+You can override the default channel for any notification type in **Settings > Notifications**.
+
+## Managing Notification Overload
+
+As your workspace grows, the volume of notifications can increase quickly. Use the following strategies to stay informed without being overwhelmed:
+
+- **Switch to digest mode** — change high-volume email notifications to **Daily Digest** so you receive one summary instead of dozens of individual emails. Configure this in **Settings > Notifications** next to each email-enabled event.
+- **Mute specific resources** — if a particularly active resource is generating noise you don't need, you can mute it individually (see the tip below) without changing your global preferences.
+- **Configure per-workspace preferences** — if you belong to multiple Trofiro workspaces, each workspace has its own notification settings. Set more aggressive filtering in busy workspaces and keep full notifications enabled in workspaces where you are more actively involved.
+
+<Tip>
+  To mute notifications for a single resource, open the resource detail view and click the **bell icon** in the resource header. Muting a resource suppresses all notifications from that resource for you only — your teammates' preferences are not affected. Click the bell icon again at any time to re-enable notifications for that resource.
+</Tip>

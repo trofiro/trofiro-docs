@@ -1,0 +1,79 @@
+---
+title: "Troubleshooting Common Trofiro Issues"
+sidebarTitle: "Troubleshooting"
+description: "Step-by-step fixes for common Trofiro problems: login failures, API errors, integration issues, and slow performance."
+---
+
+When something does not work as expected in Trofiro, a systematic approach usually resolves the issue quickly. Start by identifying which area is affected, check the relevant section below for step-by-step guidance, and verify whether the issue is isolated to your account or affects your whole workspace. For ongoing incidents, check [status.trofiro.com](https://status.trofiro.com) before diving into further troubleshooting.
+
+## Login and Authentication Issues
+
+### Can't log in
+
+1. **Check your credentials.** Confirm you are entering the correct email address and password. Passwords are case-sensitive.
+2. **Reset your password.** If you are unsure of your password, click **Forgot password?** on the login page and follow the reset instructions sent to your email.
+3. **Check for 2FA issues.** If two-factor authentication is enabled on your account and your authenticator app is showing an incorrect code, ensure your device's clock is synchronized correctly — TOTP codes are time-sensitive. If you have lost access to your authenticator app, use one of your saved backup codes to log in, then reconfigure 2FA under **Settings > Security**.
+
+### SSO error
+
+If you see an error when signing in with SSO (e.g., "Authentication failed" or "Unable to verify identity"), the most common cause is a misconfigured SSO integration. Contact your **organization's admin** and ask them to verify the SSO settings at **Settings > Security > SSO**, confirming that the client ID, client secret, and metadata URL are correct and that your email domain is authorized. Do not attempt to reconfigure SSO yourself unless you have admin-level access.
+
+### Session expired
+
+Trofiro sessions expire after a period of inactivity as a security measure. If you are suddenly redirected to the login page, simply log in again. If sessions are expiring too frequently, an admin can adjust the session timeout duration at **Settings > Security > Policies**. Checking the "Remember this device" option at login extends the session on trusted devices.
+
+## API Errors
+
+The table below covers the most common HTTP errors you may encounter when using the Trofiro REST API, along with their most likely causes and recommended fixes.
+
+| Status Code | Meaning | Common Cause | Recommended Action |
+|---|---|---|---|
+| `401 Unauthorized` | Authentication failed | Invalid or missing API key | Verify the key is correct, has not expired, and is being passed in the `Authorization: Bearer <key>` header. |
+| `403 Forbidden` | Insufficient permissions | API key lacks the required scopes | Check the key's scopes in **Settings > API Keys** and regenerate with the correct permissions if needed. |
+| `404 Not Found` | Resource does not exist | Incorrect or deleted resource ID | Double-check the resource ID in your request. Confirm the resource has not been deleted or archived. |
+| `429 Too Many Requests` | Rate limit exceeded | Too many requests in a short window | Respect the `Retry-After` header in the response and implement exponential backoff in your retry logic. |
+| `500 Internal Server Error` | Server-side error | Unexpected issue on Trofiro's servers | Check [status.trofiro.com](https://status.trofiro.com) for active incidents. If no incident is reported, contact [support@trofiro.com](mailto:support@trofiro.com) with the request ID from the response headers. |
+
+## Integration Issues
+
+### Slack messages not sending
+
+If your Trofiro workflows are configured to send Slack notifications but messages are not arriving, work through these checks in order:
+
+1. **Verify the Slack integration is connected.** Go to **Settings > Integrations > Slack** and confirm the status shows **Connected**. If it shows **Disconnected** or **Error**, click **Reconnect** and re-authorize Trofiro in your Slack workspace.
+2. **Check the target channel.** Confirm that the Slack channel specified in your workflow still exists. If the channel was renamed or deleted, update the workflow to point to the correct channel.
+3. **Check the Trofiro bot's permissions.** In Slack, ensure the Trofiro app has been invited to the target channel with the `/invite @Trofiro` command. Trofiro cannot post to channels it is not a member of.
+
+### GitHub sync stopped working
+
+If resources are no longer syncing with GitHub — for example, linked pull requests or issues are not updating — the most likely cause is an expired GitHub authorization token.
+
+1. Navigate to **Settings > Integrations > GitHub**.
+2. Click **Re-authorize** and follow the GitHub OAuth flow to grant Trofiro fresh access to your repositories.
+3. Once re-authorized, trigger a manual sync by clicking **Sync Now** to confirm the connection is working.
+
+If the issue persists after re-authorization, check that the GitHub user who authorized the integration still has access to the relevant repositories.
+
+## Performance Issues
+
+### Slow dashboard
+
+A sluggish dashboard is most often caused by a browser or extension conflict, not a problem with Trofiro itself. Try the following steps in order:
+
+1. **Clear your browser cache.** In most browsers, press `Ctrl+Shift+Delete` (Windows/Linux) or `Cmd+Shift+Delete` (Mac) to open the cache-clearing dialog. Clear cached images and files, then reload Trofiro.
+2. **Disable browser extensions.** Extensions — especially ad blockers, script blockers, and developer tools — can interfere with Trofiro's JavaScript. Open an incognito/private window (where extensions are typically disabled) and check whether performance improves.
+3. **Try a different browser.** Trofiro is optimized for the latest versions of Chrome, Firefox, Edge, and Safari. If you are experiencing issues in one browser, test in another to isolate the cause.
+
+### Large workspace loading slowly
+
+As workspaces grow, loading large unfiltered resource lists can slow down the interface. Use these strategies to keep performance snappy:
+
+- **Apply filters** to limit the resource list to only the items relevant to your current work.
+- **Archive completed resources.** Resources with an archived status are excluded from the default list view, significantly reducing the volume of data loaded. Set up auto-archive rules at **Settings > General > Default Resource Behavior**.
+- **Use saved views** with pre-applied filters so you always open a scoped, manageable list rather than the full unfiltered set.
+
+---
+
+<Tip>
+  Still stuck? Email the Trofiro support team at [support@trofiro.com](mailto:support@trofiro.com) and include a description of the issue, the steps you have already tried, and any error messages or request IDs you have seen. You can also monitor real-time platform health and view the history of past incidents at [status.trofiro.com](https://status.trofiro.com).
+</Tip>

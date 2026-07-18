@@ -1,0 +1,95 @@
+---
+title: "Authenticate Requests to the Trofiro API"
+sidebarTitle: "Authentication"
+description: "Trofiro uses API keys for authentication. Learn how to generate keys, pass them in requests, and handle auth errors."
+---
+
+Trofiro authenticates API requests using **Bearer token authentication**. You include an API key in the `Authorization` header of every request. Keys are generated per-workspace and can be scoped to limit what actions they permit — allowing you to follow the principle of least privilege and keep your integrations secure.
+
+## Getting Your API Key
+
+API keys are created and managed from your workspace settings. Each key is shown in full only once at creation time, so copy it before closing the dialog.
+
+<Steps>
+  <Step title="Log in to Trofiro">
+    Navigate to [trofiro.com](https://trofiro.com) and sign in to your workspace.
+  </Step>
+  <Step title="Open API Keys settings">
+    Go to **Settings → API Keys** from the main navigation.
+  </Step>
+  <Step title="Generate a new key">
+    Click **Generate New Key** in the top-right corner of the API Keys page.
+  </Step>
+  <Step title="Name and configure the key">
+    Give the key a descriptive name (e.g., `production-integration` or `ci-pipeline`) and optionally set an expiry date. Select the scopes the key should have access to — grant only what your integration needs.
+  </Step>
+  <Step title="Copy your key">
+    Click **Create**. Your new API key is displayed in full. **Copy it now** — Trofiro only shows the full key once. After closing the dialog, only a redacted preview is visible.
+  </Step>
+</Steps>
+
+<Warning>
+  Store your API key securely. Never share it in public repositories, client-side code, or support tickets. If a key is compromised, revoke it immediately from **Settings → API Keys** and generate a replacement.
+</Warning>
+
+## Using Your API Key
+
+Pass your API key in the `Authorization` header as a Bearer token on every request:
+
+```bash
+curl https://api.trofiro.com/v1/resources \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Replace `YOUR_API_KEY` with the key you copied from settings. The header must follow the exact format `Bearer <key>` — any deviation results in a `401 Unauthorized` response.
+
+<Tip>
+  Store your API key in an environment variable (e.g., `TROFIRO_API_KEY`) and reference it in your code rather than hard-coding the value. This keeps secrets out of your source control history and makes key rotation straightforward.
+
+  ```bash
+  export TROFIRO_API_KEY="your_key_here"
+
+  curl https://api.trofiro.com/v1/resources \
+    -H "Authorization: Bearer $TROFIRO_API_KEY"
+  ```
+</Tip>
+
+## API Key Scopes
+
+When you generate a key, you assign it one or more **scopes** that control which endpoints and actions it can access. Requests made with a key that lacks the required scope return a `403 Forbidden` response.
+
+| Scope | Description |
+|---|---|
+| `read:resources` | Read resource data — list and retrieve resource objects |
+| `write:resources` | Create, update, and delete resources |
+| `read:workflows` | Read workflow definitions and run history |
+| `write:workflows` | Create and update workflows |
+| `manage:webhooks` | Create and manage webhook endpoints |
+| `admin` | Full access to all API endpoints and workspace settings — use with caution |
+
+Assign the narrowest set of scopes your integration needs. For example, a read-only reporting pipeline should use `read:resources` and `read:workflows` rather than `admin`.
+
+<Tip>
+  Rotate your API keys regularly and set expiry dates on keys used in automated pipelines. Short-lived keys reduce your exposure window if a key is accidentally leaked. You can regenerate a key from **Settings → API Keys** without changing its name or scopes.
+</Tip>
+
+## Authentication Errors
+
+When authentication fails, the API returns an error response with one of the following HTTP status codes:
+
+| Status | Description |
+|---|---|
+| `401 Unauthorized` | No API key was included in the request, the key does not exist, or the key has been revoked or expired. Double-check that your `Authorization` header is formatted as `Bearer YOUR_API_KEY`. |
+| `403 Forbidden` | The API key is valid and active, but it does not have the required scope to perform the requested action. Review the key's scopes in **Settings → API Keys** and regenerate with broader permissions if needed. |
+
+Both responses follow the standard [error format](/api-reference/introduction#error-format):
+
+```json
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "No valid API key was provided.",
+    "request_id": "req_xyz789"
+  }
+}
+```

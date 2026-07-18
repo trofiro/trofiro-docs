@@ -1,30 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+  "projectType": "saas",
+  "projectName": "Trofiro",
+  "projectDescription": "A web application that helps users accomplish their goals with a powerful, intuitive interface.",
   "theme": "almond",
-  "name": "Trofiro",
-  "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
-  },
-  "favicon": "/favicon.svg",
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@trofiro.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Get Started",
-      "href": "/quickstart"
-    }
-  },
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
   "navigation": {
     "tabs": [
       {
@@ -95,7 +76,24 @@
       }
     ]
   },
-  "footer": {
-    "socials": {}
-  }
+  "keyFeatures": [
+    "User account management and authentication",
+    "Intuitive dashboard for managing resources",
+    "Workflow automation and task management",
+    "Third-party integrations",
+    "Real-time notifications",
+    "Customizable settings and preferences",
+    "REST API for programmatic access",
+    "Webhook support for event-driven workflows"
+  ],
+  "publicApiSurface": [
+    "GET /api/users",
+    "POST /api/users",
+    "GET /api/resources",
+    "POST /api/resources",
+    "PUT /api/resources/:id",
+    "DELETE /api/resources/:id",
+    "GET /api/webhooks",
+    "POST /api/webhooks"
+  ]
 }

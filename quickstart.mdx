@@ -1,47 +1,96 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Trofiro in Minutes"
+sidebarTitle: "Quickstart"
+description: "Create your Trofiro account, set up your workspace, and make your first API call in just a few steps."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+This guide walks you through everything you need to go from zero to your first successful Trofiro API call. By the end, you'll have a verified account, a workspace with your first resource, a working API key, and a confirmed API response — all in just a few minutes.
 
 ## Prerequisites
 
-Before you begin, you must have:
+Before you begin, make sure you have the following:
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+- A Trofiro account (you'll create one in Step 1 below)
+- Basic familiarity with REST APIs and how to run commands in a terminal
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+
+  <Step title="Sign up and create your account">
+    Navigate to [app.trofiro.com](https://app.trofiro.com) and click **Sign Up** in the top-right corner.
+
+    Fill in your details on the registration form:
+    - **Full name** — Your first and last name
+    - **Email address** — Use a work email for team collaboration
+    - **Password** — At least 8 characters, including one number and one special character
+
+    Click **Create Account**. Trofiro sends a verification email to the address you provided. Open that email and click the **Verify Email Address** link to activate your account.
+
+    Once verified, you are redirected to the onboarding flow where you can name your workspace and optionally invite teammates.
+  </Step>
+
+  <Step title="Create your first resource">
+    After completing onboarding, you land on the Trofiro dashboard. To create your first resource:
+
+    1. In the sidebar, navigate to **Resources**.
+    2. Click **New Resource** in the top-right corner of the Resources panel.
+    3. Fill in the resource details:
+       - **Name** — A descriptive label for this resource (e.g., `My First Resource`)
+       - **Description** — A brief summary of what this resource represents
+    4. Click **Create** to save the resource.
+
+    Your new resource appears in the Resources panel and is immediately available via the API.
+  </Step>
+
+  <Step title="Generate an API key">
+    To authenticate your API calls, you need a personal API key. To generate one:
+
+    1. Click your avatar in the bottom-left corner, then select **Settings**.
+    2. Navigate to **API Keys** in the left-hand settings menu.
+    3. Click **Generate New Key**.
+    4. Give the key a memorable label (e.g., `Local Development`) and click **Create**.
+
+    Your new API key is displayed **once**. Copy it immediately and store it in a secure location such as a password manager or a local `.env` file. Trofiro does not display the full key again after you close this dialog.
+
+    <Warning>
+      Never commit your API key to version control or share it publicly. If a key is compromised, revoke it immediately from **Settings > API Keys** and generate a new one.
+    </Warning>
+  </Step>
+
+  <Step title="Make your first API call">
+    With your API key in hand, you're ready to call the Trofiro API. Open your terminal and run the following command, replacing `YOUR_API_KEY` with the key you generated in the previous step:
 
     ```bash
-    npm install your-package
+    curl -X GET https://api.trofiro.com/v1/resources \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json"
     ```
-  </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
-  </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+    A successful response returns an HTTP `200 OK` status and a JSON body listing your resources:
 
-    ```bash
-    your-cli start
+    ```json
+    {
+      "data": [
+        {
+          "id": "res_01hx9k2m3nqp4r5s6t7u8v9w",
+          "name": "My First Resource",
+          "description": "A brief summary of what this resource represents",
+          "created_at": "2024-06-01T10:30:00Z",
+          "updated_at": "2024-06-01T10:30:00Z"
+        }
+      ],
+      "meta": {
+        "total": 1,
+        "page": 1,
+        "per_page": 20
+      }
+    }
     ```
+
+    You've successfully authenticated and retrieved data from the Trofiro API.
   </Step>
+
 </Steps>
 
 <Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+  Now that you have the basics down, explore [Key Concepts](/concepts/key-concepts) to understand how resources, workflows, and integrations fit together — or jump straight into the [API Reference](/api-reference/introduction) to see everything the Trofiro API can do.
 </Tip>

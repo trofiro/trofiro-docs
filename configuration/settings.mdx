@@ -1,0 +1,74 @@
+---
+title: "Workspace Settings and General Configuration"
+sidebarTitle: "Settings"
+description: "Configure your Trofiro workspace name, timezone, language, and default resource behaviors from the Settings panel."
+---
+
+The Settings panel is your central hub for configuring how your Trofiro workspace looks, behaves, and operates. From here, you can update your workspace identity, control time and language preferences, define default resource behaviors, and manage your billing plan — all in one place.
+
+## Accessing Settings
+
+To open the Settings panel, click the **gear icon** in the left sidebar, or navigate directly to [app.trofiro.com/settings](https://app.trofiro.com/settings). Settings are divided into sections in the left navigation: General, Appearance, Integrations, API Keys, Security, Billing, and Profile.
+
+<Note>
+  Settings are **workspace-scoped** by default — changes you make here apply to the entire workspace and are visible to all members. Personal preferences such as your display name, email address, and notification preferences are **account-scoped** and can be found under **Settings > Profile**.
+</Note>
+
+## General Settings
+
+The **General** section lets you control the core identity and behavior of your workspace. Update these settings at any time; most changes take effect immediately.
+
+| Setting | Default | Description |
+|---|---|---|
+| Workspace Name | Your team name | The display name shown to all workspace members and in shared links. |
+| Timezone | UTC | Affects how timestamps are displayed, when scheduled workflows run, and the delivery time of digest emails. |
+| Language | English | Sets the UI language for all members. Options: English, Spanish, French, German, Japanese. |
+| Date Format | ISO 8601 (YYYY-MM-DD) | Controls how dates appear throughout the interface. Choose ISO 8601 or a locale-specific format. |
+
+### Workspace Name
+
+Your workspace name appears at the top of the sidebar, in notification emails, and in any shared or exported content. Choose a name that clearly identifies your team or organization to avoid confusion when members belong to multiple workspaces.
+
+### Timezone
+
+The workspace timezone is used as the default reference point for all time-sensitive features, including:
+
+- Timestamps on resources and activity logs
+- Scheduled workflow trigger times
+- Daily and weekly digest email delivery windows
+
+Individual members can override this setting with their own timezone in **Settings > Profile**.
+
+### Language
+
+Changing the workspace language updates the UI for all members who have not set a personal language preference in their profile. Trofiro currently supports:
+
+- English
+- Spanish (Español)
+- French (Français)
+- German (Deutsch)
+- Japanese (日本語)
+
+### Date Format
+
+Choose between **ISO 8601** (`YYYY-MM-DD`) for a standardized, internationally consistent format, or select a **locale-specific** format (e.g., `MM/DD/YYYY` for US English or `DD/MM/YYYY` for European locales). This setting affects dates displayed in resource fields, exports, and reports.
+
+## Default Resource Behavior
+
+The **Default Resource Behavior** settings let you define how new resources are created and managed across your workspace. These defaults reduce repetitive configuration and help enforce consistency for your team.
+
+- **Default Status**: Set the status that is automatically applied to a newly created resource (e.g., "To Do", "Open", or "Pending"). You can change this per-resource type.
+- **Required Fields**: Mark specific fields as mandatory before a resource can be saved. For example, you might require an assignee or a due date on every new item.
+- **Auto-Archive Rules**: Define conditions under which completed or inactive resources are automatically archived. For example, archive any resource that has been in a "Done" status for more than 30 days. Auto-archiving keeps your workspace tidy without requiring manual cleanup.
+
+Configure these options at **Settings > General > Default Resource Behavior**.
+
+## Billing and Plan
+
+Your current plan, usage metrics, payment method, and invoice history are all accessible at **Settings > Billing**. From there you can:
+
+- Review your current plan and usage limits
+- Update your payment method or billing email
+- Download past invoices
+
+To upgrade your plan, downgrade, or discuss custom Enterprise pricing, [contact the Trofiro support team](mailto:support@trofiro.com). The support team can walk you through the options that best fit your team's size and requirements.

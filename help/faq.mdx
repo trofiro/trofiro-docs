@@ -1,0 +1,49 @@
+---
+title: "Frequently Asked Questions About Trofiro"
+sidebarTitle: "FAQ"
+description: "Answers to common questions about Trofiro accounts, billing, resources, integrations, API access, and plan limits."
+---
+
+This page answers the questions our users ask most often about Trofiro. If you cannot find what you are looking for here, reach out to the support team at [support@trofiro.com](mailto:support@trofiro.com) and we will be happy to help.
+
+<AccordionGroup>
+  <Accordion title="How do I reset my password?">
+    On the Trofiro login page, click **Forgot password?** below the sign-in form. Enter the email address associated with your account and click **Send Reset Link**. You will receive an email with a password reset link within a few minutes — click the link, enter your new password, and confirm. If the email does not arrive, check your spam folder and ensure you are using the email address registered to your Trofiro account.
+  </Accordion>
+
+  <Accordion title="Can I be a member of multiple workspaces?">
+    Yes. A single Trofiro account can belong to as many workspaces as you need. Each workspace is independent, with its own members, resources, and settings. To switch between workspaces, click your workspace name in the top-left corner of the sidebar and select a different workspace from the dropdown. You can also create a new workspace from that same menu.
+  </Accordion>
+
+  <Accordion title="What happens when I exceed my resource limit?">
+    When you reach the resource limit for your current plan, Trofiro will prevent you from creating new resources until you either archive existing resources to free up capacity or upgrade to a higher plan. You will see a warning banner in the dashboard as you approach your limit, and a notification email when you reach it. Existing resources remain fully accessible — nothing is deleted or hidden. To upgrade, go to **Settings > Billing**.
+  </Accordion>
+
+  <Accordion title="How do I transfer workspace ownership?">
+    Workspace ownership can be transferred to any existing admin-level member of your workspace. Go to **Settings > Members**, find the member you want to transfer ownership to, click the three-dot menu next to their name, and select **Transfer Ownership**. You will be asked to confirm the action. After the transfer, your role changes to Admin and the new owner has full control over billing, member management, and workspace deletion.
+  </Accordion>
+
+  <Accordion title="Is there a free plan?">
+    Yes. Trofiro offers a Free plan that includes core features for individuals and small teams, including a limited number of resources, up to 5 workspace members, and access to the REST API with standard rate limits. For larger teams or advanced features — such as custom branding, SSO, audit logs, and higher resource limits — upgrade to the Pro or Enterprise plan at **Settings > Billing**.
+  </Accordion>
+
+  <Accordion title="How do I export my data?">
+    You can export your workspace data at any time from **Settings > General > Export Data**. Trofiro generates a ZIP archive containing all of your resources, custom field values, and activity history in JSON and CSV formats. Large workspaces may take a few minutes to process; you will receive an email with a download link once the export is ready. The download link expires after 48 hours.
+  </Accordion>
+
+  <Accordion title="Can I import resources from a CSV?">
+    Yes. Trofiro supports CSV imports for bulk resource creation. Navigate to the resource list you want to populate, click **Import** in the toolbar, and upload your CSV file. Trofiro will display a column-mapping screen so you can match each column in your CSV to a Trofiro field, including custom fields. Review the preview and click **Confirm Import** to create the resources. A downloadable template CSV is available on the import screen to help you format your data correctly.
+  </Accordion>
+
+  <Accordion title="How do I delete my account?">
+    To permanently delete your personal Trofiro account, go to **Settings > Profile > Danger Zone** and click **Delete Account**. You will be asked to type your email address to confirm. If you are the owner of one or more workspaces, you must transfer ownership or delete those workspaces before you can delete your account. Account deletion is irreversible and all of your personal data will be removed in accordance with our privacy policy.
+  </Accordion>
+
+  <Accordion title="What is the API rate limit?">
+    The Trofiro REST API enforces rate limits to ensure fair usage and platform stability. Free plan accounts are limited to **60 requests per minute**; Pro plan accounts receive **600 requests per minute**; and Enterprise plan accounts can request a custom rate limit. When you exceed the rate limit, the API returns a `429 Too Many Requests` response with a `Retry-After` header indicating how many seconds to wait before retrying. Implementing exponential backoff in your integration is strongly recommended.
+  </Accordion>
+
+  <Accordion title="How do I contact support?">
+    You can reach the Trofiro support team in several ways. For general questions, email [support@trofiro.com](mailto:support@trofiro.com) and expect a response within one business day. For urgent issues, Pro and Enterprise customers can access **priority support** directly from the in-app help widget — click the **?** icon in the bottom-right corner of any page. You can also check the [Trofiro status page](https://status.trofiro.com) for real-time information about ongoing incidents or maintenance windows.
+  </Accordion>
+</AccordionGroup>
