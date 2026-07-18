@@ -1,0 +1,5 @@
+/* Changelog: minimalist layout — hide the rendered title/description header
+   (frontmatter is kept for SEO metadata and the browser tab title) */
+html[data-current-path="/changelog"] #header {
+  display: none;
+}
