@@ -1,7 +1,7 @@
 ---
-title: "REST API Endpoints for Webhooks"
+title: "Trofiro Webhooks API: Register, List, and Delete Endpoints"
 sidebarTitle: "Webhooks"
-description: "Create and manage Trofiro webhook endpoints to receive real-time HTTP callbacks when resource events occur."
+description: "Register and manage Trofiro webhook endpoints to receive real-time HTTP callbacks when resource or workflow events occur in your workspace."
 ---
 
 Webhooks allow your application to receive real-time HTTP notifications when events occur in your Trofiro workspace. Instead of polling the API repeatedly, you register a URL that Trofiro calls automatically whenever a subscribed event fires — such as when a resource is created or a workflow completes. This makes webhooks the right choice for building event-driven integrations, automation triggers, and live sync pipelines.
@@ -17,6 +17,43 @@ Subscribe to one or more of the following event types when creating a webhook en
 | `resource.deleted` | A resource was permanently deleted |
 | `workflow.triggered` | A workflow was triggered manually or by an automation rule |
 | `workflow.completed` | A workflow finished running, whether successfully or with errors |
+
+---
+
+## GET /webhooks
+
+Retrieve a list of all webhook endpoints configured in your workspace.
+
+### Response
+
+Returns a `data` array of webhook objects. Each object has the same shape as the `POST /webhooks` response.
+
+**Example request:**
+
+```bash
+curl https://api.trofiro.com/v1/webhooks \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+**Example response:**
+
+```json
+{
+  "data": [
+    {
+      "id": "wh_01H8X2K9M3",
+      "url": "https://your-app.example.com/webhooks/trofiro",
+      "events": ["resource.created", "resource.updated"],
+      "secret": "whsec_my_signing_secret",
+      "created_at": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "meta": {
+    "has_more": false,
+    "next_cursor": null
+  }
+}
+```
 
 ---
 
@@ -67,43 +104,6 @@ curl -X POST https://api.trofiro.com/v1/webhooks \
   "meta": {
     "request_id": "req_abc123",
     "timestamp": "2024-01-15T10:30:00Z"
-  }
-}
-```
-
----
-
-## GET /webhooks
-
-Retrieve a list of all webhook endpoints configured in your workspace.
-
-### Response
-
-Returns a `data` array of webhook objects. Each object has the same shape as the `POST /webhooks` response.
-
-**Example request:**
-
-```bash
-curl https://api.trofiro.com/v1/webhooks \
-  -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-**Example response:**
-
-```json
-{
-  "data": [
-    {
-      "id": "wh_01H8X2K9M3",
-      "url": "https://your-app.example.com/webhooks/trofiro",
-      "events": ["resource.created", "resource.updated"],
-      "secret": "whsec_my_signing_secret",
-      "created_at": "2024-01-15T10:30:00Z"
-    }
-  ],
-  "meta": {
-    "has_more": false,
-    "next_cursor": null
   }
 }
 ```

@@ -1,7 +1,7 @@
 ---
-title: "Authenticate Requests to the Trofiro API"
+title: "Trofiro REST API Authentication: Keys, Scopes, and Errors"
 sidebarTitle: "Authentication"
-description: "Trofiro uses API keys for authentication. Learn how to generate keys, pass them in requests, and handle auth errors."
+description: "Trofiro uses Bearer token API keys to authenticate every request. Learn how to generate keys, configure scopes, and resolve auth errors."
 ---
 
 Trofiro authenticates API requests using **Bearer token authentication**. You include an API key in the `Authorization` header of every request. Keys are generated per-workspace and can be scoped to limit what actions they permit — allowing you to follow the principle of least privilege and keep your integrations secure.

@@ -1,10 +1,10 @@
 ---
-title: "REST API Endpoints for Users and Members"
+title: "Trofiro Users API: List, Create, and Manage Members"
 sidebarTitle: "Users"
-description: "GET and PATCH endpoints for managing Trofiro workspace members, roles, and profile information via the REST API."
+description: "Use the Trofiro Users API to list all workspace members, create new users, retrieve individual profiles, and update display names and roles."
 ---
 
-The Users API lets you query and manage the members of your Trofiro workspace. Use these endpoints to list all workspace members, retrieve a specific user's profile, or update a user's display name and role. All user endpoints require a valid API key with at least `read:resources` scope for reads, and `write:resources` scope for updates.
+The Users API lets you query and manage the members of your Trofiro workspace. Use these endpoints to list all workspace members, invite a new user, retrieve a specific user's profile, or update a user's display name and role. All user endpoints require a valid API key with at least `read:resources` scope for reads, and `write:resources` scope for writes.
 
 ---
 
@@ -79,6 +79,59 @@ Returns a `data` array of user objects and a `meta` object with pagination state
 <ResponseField name="meta.next_cursor" type="string | null">
   Cursor to pass in the next request. `null` when you have reached the last page.
 </ResponseField>
+
+---
+
+## POST /users
+
+Invite a new member to your Trofiro workspace. The invited user receives an email prompting them to accept the invitation. Requires `write:resources` scope.
+
+### Body Parameters
+
+<ParamField body="email" type="string" required>
+  Email address of the person to invite. If an account already exists with this address, the user is added to the workspace directly; otherwise, an invitation email is sent.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Display name for the new user. If omitted, the name is taken from the user's existing Trofiro account or set to the email address prefix until they update it.
+</ParamField>
+
+<ParamField body="role" type="string">
+  Role to assign to the new user. Accepted values: `admin`, `member`. Defaults to `member`. Only users with the `owner` or `admin` role can assign the `admin` role.
+</ParamField>
+
+### Example
+
+**Request:**
+
+```bash
+curl -X POST https://api.trofiro.com/v1/users \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "alex@example.com",
+    "name": "Alex Johnson",
+    "role": "member"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": "usr_02J9Y3L0N4",
+    "name": "Alex Johnson",
+    "email": "alex@example.com",
+    "role": "member",
+    "created_at": "2024-01-15T10:30:00Z"
+  },
+  "meta": {
+    "request_id": "req_ghi789",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+}
+```
 
 ---
 
