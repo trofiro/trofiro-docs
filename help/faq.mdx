@@ -1,49 +1,41 @@
 ---
-title: "Trofiro Frequently Asked Questions and Feature Help"
+title: "Trofiro Live Meetings FAQ: Invite Links, Rejoining, and Privacy"
 sidebarTitle: "FAQ"
-description: "Answers to the most common questions about Trofiro accounts, billing, resources, integrations, API access, and subscription plans."
+description: "Answers to the most common questions about Trofiro live meetings — patient accounts, invite links, rejoining a call, phones, and connection privacy."
 ---
 
-This page answers the questions our users ask most often about Trofiro. If you cannot find what you are looking for here, reach out to the support team at [support@trofiro.com](mailto:support@trofiro.com) and we will be happy to help.
+Quick answers to the questions practitioners and patients ask most about live meetings. Can't find yours? Reach out at [support@trofiro.com](mailto:support@trofiro.com).
 
 <AccordionGroup>
-  <Accordion title="How do I reset my password?">
-    On the Trofiro login page, click **Forgot password?** below the sign-in form. Enter the email address associated with your account and click **Send Reset Link**. You will receive an email with a password reset link within a few minutes — click the link, enter your new password, and confirm. If the email does not arrive, check your spam folder and ensure you are using the email address registered to your Trofiro account.
+  <Accordion title="Does my patient need a Trofiro account?">
+    No. Patients join with the invite link you send them — no account, no password, no download. The link opens the join screen right in their browser.
   </Accordion>
 
-  <Accordion title="Can I be a member of multiple workspaces?">
-    Yes. A single Trofiro account can belong to as many workspaces as you need. Each workspace is independent, with its own members, resources, and settings. To switch between workspaces, click your workspace name in the top-left corner of the sidebar and select a different workspace from the dropdown. You can also create a new workspace from that same menu.
+  <Accordion title="What does my patient need to join a meeting?">
+    A browser on a computer or phone, a camera and microphone, and the invite link. The join screen lets them check both devices and enter their name before joining.
   </Accordion>
 
-  <Accordion title="What happens when I exceed my resource limit?">
-    When you reach the resource limit for your current plan, Trofiro will prevent you from creating new resources until you either archive existing resources to free up capacity or upgrade to a higher plan. You will see a warning banner in the dashboard as you approach your limit, and a notification email when you reach it. Existing resources remain fully accessible — nothing is deleted or hidden. To upgrade, go to **Settings > Billing**.
+  <Accordion title="Can a patient rejoin after leaving?">
+    Yes. Opening the same invite link again rejoins the meeting, as long as the link hasn't expired.
   </Accordion>
 
-  <Accordion title="How do I transfer workspace ownership?">
-    Workspace ownership can be transferred to any existing admin-level member of your workspace. Go to **Settings > Members**, find the member you want to transfer ownership to, click the three-dot menu next to their name, and select **Transfer Ownership**. You will be asked to confirm the action. After the transfer, your role changes to Admin and the new owner has full control over billing, member management, and workspace deletion.
+  <Accordion title="How long do invite links last?">
+    Invite links expire after a set period. Send the link close to the appointment time — and if a patient sees "**Invalid or expired link**", copy a fresh one from the control bar and resend it.
   </Accordion>
 
-  <Accordion title="Is there a free plan?">
-    Yes. Trofiro offers a Free plan that includes core features for individuals and small teams, including a limited number of resources, up to 5 workspace members, and access to the REST API with standard rate limits. For larger teams or advanced features — such as custom branding, SSO, audit logs, and higher resource limits — upgrade to the Pro or Enterprise plan at **Settings > Billing**.
+  <Accordion title="Why did the meeting start as soon as I opened my room?">
+    That's how meeting rooms work: opening the room connects you immediately, with camera and microphone on. There's no preview screen for practitioners, so check your setup before opening the room.
   </Accordion>
 
-  <Accordion title="How do I export my data?">
-    You can export your workspace data at any time from **Settings > General > Export Data**. Trofiro generates a ZIP archive containing all of your resources, custom field values, and activity history in JSON and CSV formats. Large workspaces may take a few minutes to process; you will receive an email with a download link once the export is ready. The download link expires after 48 hours.
+  <Accordion title="What's the difference between leaving and ending a meeting?">
+    When a patient selects **End call**, only they leave — the meeting continues. When the practitioner selects **End call**, the meeting ends for everyone.
   </Accordion>
 
-  <Accordion title="Can I import resources from a CSV?">
-    Yes. Trofiro supports CSV imports for bulk resource creation. Navigate to the resource list you want to populate, click **Import** in the toolbar, and upload your CSV file. Trofiro will display a column-mapping screen so you can match each column in your CSV to a Trofiro field, including custom fields. Review the preview and click **Confirm Import** to create the resources. A downloadable template CSV is available on the import screen to help you format your data correctly.
+  <Accordion title="Can I use Trofiro live meetings on my phone?">
+    Yes — meetings work in mobile browsers. On a phone, screen sharing isn't available, and the chat and patient chart overlay the video instead of docking beside it.
   </Accordion>
 
-  <Accordion title="How do I delete my account?">
-    To permanently delete your personal Trofiro account, go to **Settings > Profile > Danger Zone** and click **Delete Account**. You will be asked to type your email address to confirm. If you are the owner of one or more workspaces, you must transfer ownership or delete those workspaces before you can delete your account. Account deletion is irreversible and all of your personal data will be removed in accordance with our privacy policy.
-  </Accordion>
-
-  <Accordion title="What is the API rate limit?">
-    The Trofiro REST API enforces rate limits to ensure fair usage and platform stability. Free plan accounts are limited to **60 requests per minute**; Pro plan accounts receive **600 requests per minute**; and Enterprise plan accounts can request a custom rate limit. When you exceed the rate limit, the API returns a `429 Too Many Requests` response with a `Retry-After` header indicating how many seconds to wait before retrying. Implementing exponential backoff in your integration is strongly recommended.
-  </Accordion>
-
-  <Accordion title="How do I contact support?">
-    You can reach the Trofiro support team in several ways. For general questions, email [support@trofiro.com](mailto:support@trofiro.com) and expect a response within one business day. For urgent issues, Pro and Enterprise customers can access **priority support** directly from the in-app help widget — click the **?** icon in the bottom-right corner of any page. You can also check the [Trofiro status page](https://status.trofiro.com) for real-time information about ongoing incidents or maintenance windows.
+  <Accordion title="Is the connection private?">
+    Yes — as the join screen puts it: "Your connection is private and encrypted."
   </Accordion>
 </AccordionGroup>

@@ -1,79 +1,64 @@
 ---
-title: "Troubleshooting Common Issues and Errors in Trofiro"
+title: "Troubleshooting Trofiro Live Meetings: Fixes for Common Problems"
 sidebarTitle: "Troubleshooting"
-description: "Step-by-step fixes for common Trofiro problems including login failures, API errors, integration issues, and slow performance in your workspace."
+description: "Step-by-step fixes for common Trofiro live meeting problems — invite link errors, lost links, camera and microphone issues, and calls that won't end."
 ---
 
-When something does not work as expected in Trofiro, a systematic approach usually resolves the issue quickly. Start by identifying which area is affected, check the relevant section below for step-by-step guidance, and verify whether the issue is isolated to your account or affects your whole workspace. For ongoing incidents, check [status.trofiro.com](https://status.trofiro.com) before diving into further troubleshooting.
+Something not working during a live meeting? Find the symptom below for the fix.
 
-## Login and Authentication Issues
+## Joining problems
 
-### Can't log in
+### The invite link shows "Invalid or expired link"
 
-1. **Check your credentials.** Confirm you are entering the correct email address and password. Passwords are case-sensitive.
-2. **Reset your password.** If you are unsure of your password, click **Forgot password?** on the login page and follow the reset instructions sent to your email.
-3. **Check for 2FA issues.** If two-factor authentication is enabled on your account and your authenticator app is showing an incorrect code, ensure your device's clock is synchronized correctly — TOTP codes are time-sensitive. If you have lost access to your authenticator app, use one of your saved backup codes to log in, then reconfigure 2FA under **Settings > Security**.
+Invite links expire after a set period for the patient's security.
 
-### SSO error
+- **Patients**: ask your practitioner to send you a new link.
+- **Practitioners**: copy a fresh link from the **Copy link** button on the waiting card, or from the link button in the control bar, and resend it.
 
-If you see an error when signing in with SSO (e.g., "Authentication failed" or "Unable to verify identity"), the most common cause is a misconfigured SSO integration. Contact your **organization's admin** and ask them to verify the SSO settings at **Settings > Security > SSO**, confirming that the client ID, client secret, and metadata URL are correct and that your email domain is authorized. Do not attempt to reconfigure SSO yourself unless you have admin-level access.
+### My patient forgot or lost their link
 
-### Session expired
+Copy the link again and resend it — from the waiting card while you're alone in the room, or from the link button in the control bar during the call. The link stays the same while it's valid, so a fresh copy always works.
 
-Trofiro sessions expire after a period of inactivity as a security measure. If you are suddenly redirected to the login page, simply log in again. If sessions are expiring too frequently, an admin can adjust the session timeout duration at **Settings > Security > Policies**. Checking the "Remember this device" option at login extends the session on trusted devices.
+### "Name is required" when joining
 
-## API Errors
+The name field on the join screen can't be empty — it's how the patient appears in the call. Type a name, then select **Join room**.
 
-The table below covers the most common HTTP errors you may encounter when using the Trofiro REST API, along with their most likely causes and recommended fixes.
+## Camera and microphone
 
-| Status Code | Meaning | Common Cause | Recommended Action |
-|---|---|---|---|
-| `401 Unauthorized` | Authentication failed | Invalid or missing API key | Verify the key is correct, has not expired, and is being passed in the `Authorization: Bearer <key>` header. |
-| `403 Forbidden` | Insufficient permissions | API key lacks the required scopes | Check the key's scopes in **Settings > API Keys** and regenerate with the correct permissions if needed. |
-| `404 Not Found` | Resource does not exist | Incorrect or deleted resource ID | Double-check the resource ID in your request. Confirm the resource has not been deleted or archived. |
-| `429 Too Many Requests` | Rate limit exceeded | Too many requests in a short window | Respect the `Retry-After` header in the response and implement exponential backoff in your retry logic. |
-| `500 Internal Server Error` | Server-side error | Unexpected issue on Trofiro's servers | Check [status.trofiro.com](https://status.trofiro.com) for active incidents. If no incident is reported, contact [support@trofiro.com](mailto:support@trofiro.com) with the request ID from the response headers. |
+### The preview says "Your camera is off"
 
-## Integration Issues
+On the join screen, this appears when no video is coming through:
 
-### Slack messages not sending
+1. Turn the camera toggle on.
+2. If it's already on, use the camera picker to select a different device.
+3. Make sure your browser has permission to use the camera on this site — look for a camera icon in the address bar.
 
-If your Trofiro workflows are configured to send Slack notifications but messages are not arriving, work through these checks in order:
+### Others can't hear me
 
-1. **Verify the Slack integration is connected.** Go to **Settings > Integrations > Slack** and confirm the status shows **Connected**. If it shows **Disconnected** or **Error**, click **Reconnect** and re-authorize Trofiro in your Slack workspace.
-2. **Check the target channel.** Confirm that the Slack channel specified in your workflow still exists. If the channel was renamed or deleted, update the workflow to point to the correct channel.
-3. **Check the Trofiro bot's permissions.** In Slack, ensure the Trofiro app has been invited to the target channel with the `/invite @Trofiro` command. Trofiro cannot post to channels it is not a member of.
+1. Check that your microphone isn't muted — the microphone control shows its current state.
+2. Use the microphone picker (desktop) to select the right device.
+3. Make sure your browser has permission to use the microphone on this site.
 
-### GitHub sync stopped working
+## During the meeting
 
-If resources are no longer syncing with GitHub — for example, linked pull requests or issues are not updating — the most likely cause is an expired GitHub authorization token.
+### There's no screen share button
 
-1. Navigate to **Settings > Integrations > GitHub**.
-2. Click **Re-authorize** and follow the GitHub OAuth flow to grant Trofiro fresh access to your repositories.
-3. Once re-authorized, trigger a manual sync by clicking **Sync Now** to confirm the connection is working.
+Screen sharing is available on desktop browsers only. If you're on a phone or tablet, join from a computer to share your screen.
 
-If the issue persists after re-authorization, check that the GitHub user who authorized the integration still has access to the relevant repositories.
+### My chat message won't send
 
-## Performance Issues
+Messages are limited to 750 characters — shorten the message and try again. Press **Enter** to send; **Shift+Enter** adds a new line instead of sending.
 
-### Slow dashboard
+## Ending the call
 
-A sluggish dashboard is most often caused by a browser or extension conflict, not a problem with Trofiro itself. Try the following steps in order:
+### "Couldn't end the call for everyone. Please try again."
 
-1. **Clear your browser cache.** In most browsers, press `Ctrl+Shift+Delete` (Windows/Linux) or `Cmd+Shift+Delete` (Mac) to open the cache-clearing dialog. Clear cached images and files, then reload Trofiro.
-2. **Disable browser extensions.** Extensions — especially ad blockers, script blockers, and developer tools — can interfere with Trofiro's JavaScript. Open an incognito/private window (where extensions are typically disabled) and check whether performance improves.
-3. **Try a different browser.** Trofiro is optimized for the latest versions of Chrome, Firefox, Edge, and Safari. If you are experiencing issues in one browser, test in another to isolate the cause.
+The request to end the meeting didn't go through. Select **End call** again — the button re-enables after the error.
 
-### Large workspace loading slowly
+### The meeting ended by itself
 
-As workspaces grow, loading large unfiltered resource lists can slow down the interface. Use these strategies to keep performance snappy:
-
-- **Apply filters** to limit the resource list to only the items relevant to your current work.
-- **Archive completed resources.** Resources with an archived status are excluded from the default list view, significantly reducing the volume of data loaded. Set up auto-archive rules at **Settings > General > Default Resource Behavior**.
-- **Use saved views** with pre-applied filters so you always open a scoped, manageable list rather than the full unfiltered set.
-
----
+Your practitioner ended the call for everyone. Nothing is wrong — you'll see "**Your call has ended**", and you can safely close the window.
 
 <Tip>
-  Still stuck? Email the Trofiro support team at [support@trofiro.com](mailto:support@trofiro.com) and include a description of the issue, the steps you have already tried, and any error messages or request IDs you have seen. You can also monitor real-time platform health and view the history of past incidents at [status.trofiro.com](https://status.trofiro.com).
+  Still stuck? Contact the support team at [support@trofiro.com](mailto:support@trofiro.com).
 </Tip>

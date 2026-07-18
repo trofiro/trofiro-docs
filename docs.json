@@ -3,9 +3,9 @@
   "theme": "almond",
   "name": "Trofiro",
   "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
+    "primary": "#1f7a63",
+    "light": "#3ca889",
+    "dark": "#0f3d2e"
   },
   "favicon": "/favicon.svg",
   "logo": {
@@ -26,71 +26,26 @@
     }
   },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Documentation",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "quickstart",
-              "getting-started/account-setup",
-              "getting-started/dashboard-overview"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "concepts/key-concepts",
-              "concepts/workflows",
-              "concepts/data-model"
-            ]
-          },
-          {
-            "group": "Guides",
-            "pages": [
-              "guides/first-steps",
-              "guides/common-tasks",
-              "guides/integrations",
-              "guides/notifications"
-            ]
-          },
-          {
-            "group": "Configuration",
-            "pages": [
-              "configuration/settings",
-              "configuration/customization",
-              "configuration/security"
-            ]
-          },
-          {
-            "group": "Help",
-            "pages": [
-              "help/faq",
-              "help/troubleshooting"
-            ]
-          }
+        "group": "Get started",
+        "pages": [
+          "introduction",
+          "quickstart",
+          "getting-started/navigating-trofiro"
         ]
       },
       {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "api-reference/introduction",
-              "api-reference/authentication"
-            ]
-          },
-          {
-            "group": "Endpoints",
-            "pages": [
-              "api-reference/endpoints/users",
-              "api-reference/endpoints/resources",
-              "api-reference/endpoints/webhooks"
-            ]
-          }
+        "group": "Guides",
+        "pages": [
+          "guides/live-meetings"
+        ]
+      },
+      {
+        "group": "Help",
+        "pages": [
+          "help/faq",
+          "help/troubleshooting"
         ]
       }
     ]
