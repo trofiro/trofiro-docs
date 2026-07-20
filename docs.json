@@ -22,40 +22,115 @@
     "primary": {
       "type": "button",
       "label": "Get Started",
-      "href": "/quickstart"
+      "href": "/en/quickstart"
     }
   },
   "navigation": {
-    "groups": [
+    "languages": [
       {
-        "group": "Get started",
-        "pages": [
-          "introduction",
-          "quickstart",
-          "getting-started/navigating-trofiro"
+        "language": "en",
+        "default": true,
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "en/introduction",
+              "en/quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "en/guides/live-meetings"
+            ]
+          },
+          {
+            "group": "Help",
+            "pages": [
+              "en/help/faq",
+              "en/help/troubleshooting"
+            ]
+          },
+          {
+            "group": " ",
+            "pages": [
+              "en/changelog"
+            ]
+          }
         ]
       },
       {
-        "group": "Guides",
-        "pages": [
-          "guides/live-meetings"
-        ]
-      },
-      {
-        "group": "Help",
-        "pages": [
-          "help/faq",
-          "help/troubleshooting"
-        ]
-      },
-      {
-        "group": " ",
-        "pages": [
-          "changelog"
+        "language": "pt-BR",
+        "navbar": {
+          "links": [
+            {
+              "label": "Suporte",
+              "href": "mailto:suporte@trofiro.com"
+            }
+          ],
+          "primary": {
+            "type": "button",
+            "label": "Comece agora",
+            "href": "/pt-BR/quickstart"
+          }
+        },
+        "groups": [
+          {
+            "group": "Comece por aqui",
+            "pages": [
+              "pt-BR/introduction",
+              "pt-BR/quickstart"
+            ]
+          },
+          {
+            "group": "Guias",
+            "pages": [
+              "pt-BR/guides/live-meetings"
+            ]
+          },
+          {
+            "group": "Ajuda",
+            "pages": [
+              "pt-BR/help/faq",
+              "pt-BR/help/troubleshooting"
+            ]
+          },
+          {
+            "group": " ",
+            "pages": [
+              "pt-BR/changelog"
+            ]
+          }
         ]
       }
     ]
   },
+  "redirects": [
+    {
+      "source": "/introduction",
+      "destination": "/en/introduction"
+    },
+    {
+      "source": "/quickstart",
+      "destination": "/en/quickstart"
+    },
+    {
+      "source": "/guides/live-meetings",
+      "destination": "/en/guides/live-meetings"
+    },
+    {
+      "source": "/help/faq",
+      "destination": "/en/help/faq"
+    },
+    {
+      "source": "/help/troubleshooting",
+      "destination": "/en/help/troubleshooting"
+    },
+    {
+      "source": "/changelog",
+      "destination": "/en/changelog"
+    }
+  ],
   "footer": {
     "socials": {}
   }
