@@ -1,8 +1,8 @@
 ---
 name: trofiro-pr
 description: >-
-  Push the current branch to GitHub and open (or update) a pull request for it against `main`,
-  with the title `[<Linear issue id>] <Linear issue title>` and a body that is only a concise
+  Push the current branch to GitHub and open (or update) a pull request for it against the repo's
+  default branch, with the title `[<Linear issue id>] <Linear issue title>` and a body that is only a concise
   summary of the technical code changes. Use when the user asks to "open/create a PR", "raise a
   pull request", "push this branch as a PR", "trofiro-pr", or "PR this branch". Targets the
   repository the current directory belongs to (resolved from its git remote). Reads the Linear
@@ -11,7 +11,7 @@ description: >-
 
 # trofiro-pr
 
-Push the current feature branch and open a pull request against `main` in a **strict, minimal
+Push the current feature branch and open a pull request against the repo's default branch in a **strict, minimal
 format**. The PR **title** is the Linear issue id in brackets followed by the issue title; the PR
 **body** is nothing but a concise summary of the technical code changes.
 
@@ -23,9 +23,13 @@ account with access to the repo's git remote) and the **Linear MCP**.
 
 ## 0. Prerequisites (verify first)
 
-- **Resolve the target repository from the working directory.** Run
-  `gh repo view --json nameWithOwner -q .nameWithOwner` — `gh` auto-detects the repo from the
-  `origin` remote. The result is `<owner>/<repo>`; use it everywhere below. On failure:
+- **Resolve the target repository and default branch from the `origin` remote.** Run
+  `gh repo view "$(git remote get-url origin)" --json nameWithOwner,defaultBranchRef` — resolve
+  from the `origin` URL **explicitly**, because no-argument `gh` commands follow the
+  `gh`-configured default repo (`gh repo set-default`), which can differ from `origin`. This
+  yields the repo `<owner>/<repo>` and the default branch `<base>` (usually `main`). Use both
+  everywhere below — pass `--repo <owner>/<repo>` to **every** `gh pr` command, and use `<base>`
+  for guardrails, diffs, and the PR base. On failure:
   - **No git remote configured** → stop and tell the user to add one.
   - ***"Could not resolve to a Repository"*** → `gh` is authed to an account without access to
     that remote (e.g. a personal/other-org login) — stop and tell the user to
@@ -37,8 +41,8 @@ account with access to the repo's git remote) and the **Linear MCP**.
 
 ## 1. Guardrails (stop early if these fail)
 
-1. **Not on the default branch.** `git branch --show-current` must not be `main` (nor `master`).
-   If it is, stop — the user needs a feature branch.
+1. **Not on the default branch.** `git branch --show-current` must not be `<base>` (the default
+   branch resolved in step 0). If it is, stop — the user needs a feature branch.
 2. **Committed work only.** `git status --porcelain` (ignore untracked `.claude/`). If there are
    uncommitted tracked changes, **stop and ask the user to commit first** — do **not** auto-commit,
    and do not include them.
@@ -55,9 +59,9 @@ account with access to the repo's git remote) and the **Linear MCP**.
 
 ## 3. Build the PR body — a technical-changes summary only
 
-Gather the branch diff vs the default branch:
-`git log origin/main..HEAD --oneline`, `git diff --stat origin/main...HEAD`, and
-`git diff origin/main...HEAD` (read the actual changes, not just the stat).
+Gather the branch diff vs the default branch (`<base>` from step 0):
+`git log origin/<base>..HEAD --oneline`, `git diff --stat origin/<base>...HEAD`, and
+`git diff origin/<base>...HEAD` (read the actual changes, not just the stat).
 
 Write a **concise, factual** summary of the **technical code changes**, grouped by feature/area as
 a short bullet list (or tight prose). Then, **strictly**:
@@ -81,20 +85,20 @@ independent of the `gh` account).
 ## 5. Create or update the PR (idempotent)
 
 Check for an existing PR on this branch first:
-`gh pr view --json number,url,state 2>/dev/null` (or `gh pr list --head "$(git branch --show-current)"
---json number,url`).
+`gh pr view --repo <owner>/<repo> --json number,url,state 2>/dev/null` (or
+`gh pr list --repo <owner>/<repo> --head "$(git branch --show-current)" --json number,url`).
 
 - **No PR yet** → create it **as a draft** (`--draft`):
   ```
-  gh pr create --draft --base main --head "<branch>" --title "[<ID>] <title>" --body-file <scratchpad>/pr-body.md
+  gh pr create --repo <owner>/<repo> --draft --base <base> --head "<branch>" --title "[<ID>] <title>" --body-file <scratchpad>/pr-body.md
   ```
-  `gh` auto-detects the repo from the remote; pass `--repo <owner>/<repo>` (the value resolved
-  in step 0) explicitly if detection is unreliable. The PR opens as a draft on purpose — the author marks it **Ready for
+  Always pass `--repo <owner>/<repo>` and `--base <base>` (the values resolved in step 0) — never
+  rely on `gh` auto-detection. The PR opens as a draft on purpose — the author marks it **Ready for
   review** when it's ready, and that draft→ready event is what triggers cubic's review and Linear's
   move to **In Review**.
 - **PR already exists** → update it in place (never open a duplicate):
   ```
-  gh pr edit <number> --title "[<ID>] <title>" --body-file <scratchpad>/pr-body.md
+  gh pr edit <number> --repo <owner>/<repo> --title "[<ID>] <title>" --body-file <scratchpad>/pr-body.md
   ```
   `gh pr edit` does not change draft state — don't flip an existing PR's draft/ready status.
 
@@ -112,13 +116,18 @@ issue via the branch name and the `[TRO-…]` title prefix, so no Linear write i
 - **Wrong `gh` account → "Could not resolve to a Repository".** A push can succeed (remote-URL
   auth) while `gh` API calls fail (a `gh` account without access to the remote's repo). Always
   verify with `gh repo view` in step 0; remediate with `gh auth switch`/`gh auth login`.
+- **`gh` default repo ≠ `origin`.** `gh repo set-default` can point no-argument `gh` commands at a
+  different repository than the one being pushed to — resolve the repo from the `origin` URL in
+  step 0 and pass `--repo <owner>/<repo>` to every `gh pr` command.
+- **Default branch may not be `main`** — use `<base>` (`defaultBranchRef.name` from step 0) for the
+  guardrail, the diffs, and `--base`; never hardcode `main`.
 - **Branch → id parsing**: first `[A-Za-z]{2,}-[0-9]+` match, uppercased.
 - **Format is the whole point** — title `[<ID>] <title>`; body = technical-changes summary only, no
   tests / sections / footer / rationale.
 - **Idempotent** — update the branch's existing PR instead of creating a second one.
 - **New PRs open as draft** (`--draft`); the author marks Ready for review to fire cubic's review
   and Linear's In Review transition. Don't flip an existing PR's draft state on update.
-- **Refuse on `main`**, push committed work only, and leave Linear untouched.
+- **Refuse on the default branch**, push committed work only, and leave Linear untouched.
 
 ## Reference: what "good" looks like
 
