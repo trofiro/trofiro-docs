@@ -31,8 +31,7 @@
         "group": "Get started",
         "pages": [
           "introduction",
-          "quickstart",
-          "getting-started/navigating-trofiro"
+          "quickstart"
         ]
       },
       {
