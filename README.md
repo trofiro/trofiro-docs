@@ -1,55 +1,62 @@
-# Mintlify Starter Kit
+# Trofiro documentation
 
-Use the starter kit to get your docs deployed and ready to customize.
+Product documentation for Trofiro, a web application for practitioners who love their patients. The docs are built with [Mintlify](https://mintlify.com) and written in two languages: English and Brazilian Portuguese.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## What's documented
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+The docs currently cover **live meetings** — secure video appointments with patients, straight from the browser, with no downloads and no patient account required. Practitioners start a meeting from their meeting room, invite a patient with an invite link, share their screen, chat, keep the patient chart open beside the call, and use audio-only mode for in-person appointments.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+Content is organized into:
 
-## AI-assisted writing
+- **Get started** — introduction and quickstart
+- **Guides** — live meetings
+- **Help** — FAQ and troubleshooting
+- **Changelog** — feature announcements
 
-Set up your AI coding tool to work with Mintlify:
+Other areas of the application (Appointments, Patients, Communication, Assistant, Finance, Research) get documented pages as they ship.
+
+## Structure
+
+```
+en/          English content (default language)
+pt-BR/       Brazilian Portuguese content
+docs.json    Site config and per-language navigation
+CLAUDE.md    Writing conventions, terminology, and content rules
+```
+
+Two rules hold everything together:
+
+- File slugs are identical across languages (`en/quickstart.mdx` ↔ `pt-BR/quickstart.mdx`) — the language switcher depends on it, so file names are never localized.
+- Every content change ships in both languages in the same change.
+
+## Local development
+
+Install the [Mintlify CLI](https://www.npmjs.com/package/mint) and run the dev server at the repo root:
 
 ```bash
-npx skills add https://mintlify.com/docs
-```
-
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
-
-See the [AI tools guides](/ai-tools) for tool-specific setup.
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
 npm i -g mint
-```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
 mint dev
 ```
 
-View your local preview at `http://localhost:3000`.
+Preview at `http://localhost:3000`. After content changes, check for broken links and anchors:
 
-## Publishing changes
+```bash
+npx mint broken-links
+```
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+If the dev server misbehaves, run `mint update` to get the latest CLI.
 
-## Need help?
+## Writing conventions
 
-### Troubleshooting
+[CLAUDE.md](CLAUDE.md) is the source of truth for terminology (practitioner, patient, live meeting, invite link, and their pt-BR equivalents), style, page patterns, and content boundaries. Only shipped behavior gets documented — everything is verified against the application source in the sibling `trofiro-frontend` repo, where the locale files are also the canonical source for quoted UI strings.
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+## Workflow
 
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+Two Claude Code skills drive the day-to-day work:
+
+- `trofiro-docs` — generates the full documentation package for the feature on the current branch (guide, FAQ and troubleshooting sections, changelog entry, in both languages), researched from its Linear issue and verified against `trofiro-frontend`.
+- `trofiro-pr` — pushes the branch and opens a draft PR titled `[<Linear issue id>] <issue title>`.
+
+## Publishing
+
+Changes deploy automatically through the Mintlify GitHub app after merging to `main`.
